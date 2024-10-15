@@ -1,2 +1,4 @@
-# Projeto-2
-p
+# Projeto-LBP2
+
+Projeto em andamento.
+
