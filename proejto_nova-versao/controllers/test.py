@@ -8,9 +8,10 @@ lista = [Adm, Usuario1]
 hello_controller = Blueprint('hello', __name__)
 
 
-@hello_controller.route('/', methods=['post', 'get'])
+@hello_controller.route('/', methods=['POST', 'GET'])
 def index():
-    return render_template('home.html')
+    usuario_logado = session.get('usuario_logado')
+    return render_template('home.html', usuario=usuario_logado)
 
 @hello_controller.before_request
 def autenticar_usuario():
@@ -23,12 +24,12 @@ def autenticar_usuario():
 
 # parte de login
 
-@hello_controller.route('/login', methods=['post', 'get'])
+@hello_controller.route('/login', methods=['POST', 'GET'])
 def login():
     # lógica?
-    if request.method == "post":
-        session['usuario'] = request.form['usuario']
-        return redirect(url_for('index'))
+    if request.method == "POST":
+        session['usuario'] = request.form['username']
+        return redirect(url_for('hello.index'))
     return render_template('login.html')
 
 @hello_controller.route('/autenticar', methods=["POST"])
@@ -37,10 +38,24 @@ def autenticar():
     password = request.form['password']
 
     for usuario in lista:
-        if usuario.username == username and usuario.password == password:
+        if usuario.validate(username, password):
             session['usuario_logado'] = usuario.username
-            flash(usuario.username + ' logado com sucesso!')
-            return redirect(url_for('home.html'))
+            flash(f'{usuario.username} logado com sucesso!')
+            return redirect(url_for('hello.index'))
 
     flash('Usuário ou senha incorretos.')
-    return redirect(url_for('login'))
+    return redirect(url_for('hello.login'))
+   
+@hello_controller.route('/logout')
+def logout():
+    session.pop('usuario_logado', None)
+    return redirect(url_for('hello.login'))
+
+
+@hello_controller.route('/compras')
+def compras():
+    return render_template('compras.html')
+
+@hello_controller.route('/sistema')
+def sistema():
+    return render_template('sistema.html')

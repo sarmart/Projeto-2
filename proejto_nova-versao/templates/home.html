@@ -6,13 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Bem-vindo, {{ session['usuario'] if 'usuario' in session else 'Visitante' }}</h1>
-    {% if 'usuario' in session %}
-        <p><a href="{{ url_for('hello.index') }}">index</a></p>
+
+    {% if usuario %}
+        <h1>Bem-vindo, {{ usuario }}!</h1>
+        <p><a href="{{ url_for('hello.logout') }}">Logout</a></p>
     {% else %}
+        <h1>Bem-vindo a página principal!</h1>
         <p><a href="{{ url_for('hello.login') }}">Login</a></p>
     {% endif %}
-    <br>
-    <a href="/login">Faça o login clicando aqui.</a>
 </body>
 </html>

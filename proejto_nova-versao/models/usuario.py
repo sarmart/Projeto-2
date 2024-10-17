@@ -3,6 +3,6 @@ class User:
         self.username = username
         self.password = password
 
-    def str(self, username, password):
+    def validate(self, username, password):
         return self.username == username and self.password == password
 

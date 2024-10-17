@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, flash, request, url_for
+from flask import Flask
 from controllers.test import hello_controller
 
 app = Flask(__name__)
